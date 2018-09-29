@@ -1,0 +1,19 @@
+FROM daocloud.io/node:8.5-alpine
+
+MAINTAINER yuliang <yu.liang@freelog.com>
+
+RUN mkdir -p /data/freelog-statistics-service
+
+WORKDIR /data/freelog-statistics-service
+
+COPY . /data/freelog-statistics-service
+
+RUN npm install
+
+ENV NODE_ENV test
+ENV EGG_SERVER_ENV test
+ENV PORT 5018
+
+EXPOSE 5018
+
+CMD [ "npm", "start" ]
