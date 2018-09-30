@@ -65,12 +65,12 @@ module.exports = appInfo => {
         gatewayUrl: "http://api.freelog.com",
 
         mongoose: {
-            url: "mongodb://127.0.0.1:27017/event"
+            url: "mongodb://127.0.0.1:27017/statistics"
         },
 
         rabbitMq: {
             connOptions: {
-                host: '192.168.164.129',
+                host: '192.168.164.165',
                 port: 5672,
                 login: 'guest',
                 password: 'guest',
@@ -86,7 +86,7 @@ module.exports = appInfo => {
             },
             queues: [
                 {
-                    name: '[statistics]-end-of-cycle-queue',
+                    name: 'statistics#end-of-cycle-queue',
                     options: {autoDelete: false, durable: true},
                     routingKeys: [
                         {
@@ -96,11 +96,11 @@ module.exports = appInfo => {
                     ]
                 },
                 {
-                    name: '[statistics]-presentable-consumption-queue',
+                    name: 'statistics#presentable-consumption-queue',
                     options: {autoDelete: false, durable: true},
                     routingKeys: [
                         {
-                            exchange: 'freelog-auth-exchange',
+                            exchange: 'freelog-contract-exchange',
                             routingKey: 'presentable.consumption.event'
                         }
                     ]

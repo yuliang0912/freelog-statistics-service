@@ -19,11 +19,10 @@ module.exports = class PresentableConsumptionEventHandler {
         const {presentableId, consumptionDate, userContractId, userId, nodeId} = presentableConsumptionEvent
         const cycleNumber = cycleHelper.getCycleNumber(new Date(consumptionDate))
 
-        return this.createOrUpdatePresentableStatistics({presentableId, cycleNumber}).then(() => {
-            const model = {presentableId, consumptionDate, userContractId, userId, nodeId, cycleNumber}
-            return this.presentableConsumptionRecordProvider.create(model)
+        const model = {presentableId, consumptionDate, userContractId, userId, nodeId, cycleNumber}
+        return this.presentableConsumptionRecordProvider.create(model).then(() => {
+            return this.createOrUpdatePresentableStatistics({presentableId, cycleNumber})
         }).then(statisticInfo => this.sendNotice(statisticInfo)).catch(error => this.errorHandler(error, presentableConsumptionEvent))
-
     }
 
     /**
@@ -48,7 +47,7 @@ module.exports = class PresentableConsumptionEventHandler {
             return statistic
         }
 
-        return this.presentableConsumptionStatisticsProvider.findOne({presentableId}).sort({cycleNumber: -1}).then(prevStatisticsInfo => {
+        return this.presentableConsumptionStatisticsProvider.findOne({presentableId}, null, {sort: {cycleNumber: -1}}).then(prevStatisticsInfo => {
             prevStatisticsInfo = prevStatisticsInfo || {cycleNumber: 0, count: 0, totalCount: 0}
             return {
                 cycleNumber, presentableId, count: 1,

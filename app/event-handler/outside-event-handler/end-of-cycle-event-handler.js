@@ -35,10 +35,9 @@ module.exports = class EndOfCycleEventHandler {
     }
 
     /**
-     * 分发确认统计数据的任务
+     * 发送任务到egg-agent 然后agent会随机发送任务到一个worker,尽可能保证所有worker平均分配来共同执行统计任务
      */
     async sendTasks(model) {
-        //发送任务到egg-agent 然后agent会随机发送任务到一个worker,尽可能保证所有worker平均分配来共同执行统计任务
-        this.app.messenger.sendToAgent(CalculatePresentableStatisticalDataEvent, model)
+        this.app.sendMessageToClusterRandomWorker(CalculatePresentableStatisticalDataEvent, model)
     }
 }

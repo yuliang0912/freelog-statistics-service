@@ -19,18 +19,14 @@ module.exports = class RabbitMessageQueueSubscribeHandler {
     subscribe() {
         new rabbit(this.app.config.rabbitMq).connect().then(client => {
             //订阅合同相关的事件注册队列
-            client.subscribe('[statistics]-end-of-cycle-queue', this.handleMessage.bind(this))
+            client.subscribe('statistics#end-of-cycle-queue', this.handleMessage.bind(this))
             //订阅presentable消费记录队列
-            client.subscribe('[statistics]-presentable-consumption-queue', this.handleMessage.bind(this))
+            client.subscribe('statistics#presentable-consumption-queue', this.handleMessage.bind(this))
         }).catch(console.error)
     }
 
     /**
      * rabbitMq事件处理主函数
-     * @param message
-     * @param headers
-     * @param deliveryInfo
-     * @param messageObject
      */
     async handleMessage(message, headers, deliveryInfo, messageObject) {
         try {
@@ -60,12 +56,12 @@ module.exports = class RabbitMessageQueueSubscribeHandler {
         const {handlerPatrun, app} = this
 
         //周期结束队列
-        handlerPatrun.add({queue: '[statistics]-end-of-cycle-queue', eventName: 'endOfCycle'}, ({message, headers}) => {
+        handlerPatrun.add({queue: 'statistics#end-of-cycle-queue'}, ({message}) => {
             app.emit(EndOfCycleEvent, message)
         })
 
         //presentable消费队列
-        handlerPatrun.add({queue: '[statistics]-presentable-consumption-queue'}, ({message, headers}) => {
+        handlerPatrun.add({queue: 'statistics#presentable-consumption-queue'}, ({message, headers}) => {
             app.emit(PresentableConsumptionEvent, message)
         })
     }

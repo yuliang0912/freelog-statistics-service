@@ -6,7 +6,8 @@ module.exports = class CalculateStatisticalDataEventHandler {
 
     constructor(app) {
         this.app = app
-        this.presentableConsumptionRecordProvider = app.dal.PresentableConsumptionRecordProvider
+        this.queue = queue(this.calculatePresentableStatistical.bind(this), 50)
+        this.presentableConsumptionRecordProvider = app.dal.presentableConsumptionRecordProvider
         this.presentableConsumptionStatisticsProvider = app.dal.presentableConsumptionStatisticsProvider
     }
 
@@ -15,16 +16,37 @@ module.exports = class CalculateStatisticalDataEventHandler {
      * @param lockedSubjectInfo
      */
     async handle(statisticsInfo) {
+        this.queue.push(statisticsInfo, this.callback.bind(this))
+    }
 
-        const {presentableId, cycleNumber, count, startCount} = statisticsInfo
-        const consumptionCountTask = await this.presentableConsumptionRecordProvider.count({presentableId, cycleNumber})
+    /**
+     * 计算presentable消费统计数据
+     * @param statisticsInfo
+     * @returns {Promise<void>}
+     */
+    async calculatePresentableStatistical(statisticsInfo) {
 
-        const model = {status: 2}
-        if (consumptionCountTask !== count) {
-            model.count = consumptionCountTask
-            model.totalCount = startCount + consumptionCountTask
-        }
+        const {presentableId, cycleNumber} = statisticsInfo
+
+        const consumptionCount = await this.presentableConsumptionRecordProvider.count({presentableId, cycleNumber})
+        const totalConsumptionCount = await this.presentableConsumptionRecordProvider.count({
+            presentableId, cycleNumber: {$lte: cycleNumber}
+        })
+
+        const model = {status: 2, count: consumptionCount, totalCount: totalConsumptionCount}
 
         await this.presentableConsumptionStatisticsProvider.updateOne({presentableId, cycleNumber}, model)
+            .catch(error => this.callback(error, statisticsInfo))
+    }
+
+    /**
+     * 错误处理
+     * @param err
+     */
+    callback(error) {
+        if (error instanceof Error) {
+            console.log("calculate-statistical-data-event-handler", '事件执行异常', ...arguments)
+            this.app.logger.error("calculate-statistical-data-event-handler", '事件执行异常', ...arguments)
+        }
     }
 }
