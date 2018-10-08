@@ -1,6 +1,6 @@
 'use strict'
 
-const cycleHelper = require('../../extend/helper/cycle-helper')
+const cycleHelper = require('egg-freelog-base/app/extend/helper/cycle-helper')
 const {PresentableConsumptionCountChangedEvent} = require('../../enum/mq-event-publish-enum')
 
 module.exports = class PresentableConsumptionEventHandler {

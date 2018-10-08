@@ -36,13 +36,6 @@ module.exports = appInfo => {
 
         middleware: ['errorHandler'],
 
-        /**
-         * mongoDB配置
-         */
-        mongo: {
-            uri: 'mongodb://192.168.0.99:27017/auth'
-        },
-
         multipart: {
             autoFields: true,
             defaultCharset: 'utf8',

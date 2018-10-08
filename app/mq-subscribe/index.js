@@ -18,7 +18,7 @@ module.exports = class RabbitMessageQueueSubscribeHandler {
      */
     subscribe() {
         new rabbit(this.app.config.rabbitMq).connect().then(client => {
-            //订阅合同相关的事件注册队列
+            //订阅周期结束事件
             client.subscribe('statistics#end-of-cycle-queue', this.handleMessage.bind(this))
             //订阅presentable消费记录队列
             client.subscribe('statistics#presentable-consumption-queue', this.handleMessage.bind(this))

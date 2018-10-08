@@ -6,7 +6,7 @@ module.exports = class CalculateStatisticalDataEventHandler {
 
     constructor(app) {
         this.app = app
-        this.queue = queue(this.calculatePresentableStatistical.bind(this), 50)
+        this.queue = queue(this.calculatePresentableStatistical.bind(this), 20)
         this.presentableConsumptionRecordProvider = app.dal.presentableConsumptionRecordProvider
         this.presentableConsumptionStatisticsProvider = app.dal.presentableConsumptionStatisticsProvider
     }
