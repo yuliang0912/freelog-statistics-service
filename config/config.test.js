@@ -12,7 +12,7 @@ module.exports = {
         connOptions: {
             host: '172.18.215.229',
             port: 5672,
-            login: 'test_user_event',
+            login: 'test_user_statistics',
             password: 'test_user_2018',
             authMechanism: 'AMQPLAIN'
         }
