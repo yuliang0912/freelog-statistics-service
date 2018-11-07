@@ -14,6 +14,7 @@ module.exports = class EndOfCycleEventHandler {
      * @param cycleNumber
      */
     async handle({cycleNumber}) {
+        console.log(`end of cycle event:${cycleNumber}`)
         await this.getToBeConfirmedPresentableConsumptionStatistics({cycleNumber})
     }
 
