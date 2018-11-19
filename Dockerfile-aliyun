@@ -10,8 +10,8 @@ COPY . /data/freelog-statistics-service
 
 RUN npm install
 
-ENV NODE_ENV test
-ENV EGG_SERVER_ENV test
+ENV NODE_ENV prod
+ENV EGG_SERVER_ENV prod
 ENV PORT 7018
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
