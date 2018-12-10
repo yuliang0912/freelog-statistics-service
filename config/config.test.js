@@ -10,15 +10,15 @@ module.exports = {
 
     rabbitMq: {
         connOptions: {
-            host: '172.18.215.229',
-            port: 5672,
+            host: '172.18.215.231',
+            port: 5673,
             login: 'test_user_statistics',
-            password: 'test_user_2018',
+            password: 'rabbit@freelog',
             authMechanism: 'AMQPLAIN'
         }
     },
 
     mongoose: {
-        url: "mongodb://172.18.215.229:27017/statistics"
+        url: "mongodb://172.18.215.231:27018/statistics"
     },
 }
