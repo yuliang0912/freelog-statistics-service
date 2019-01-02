@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 module.exports = appInfo => {
 
@@ -54,8 +54,6 @@ module.exports = appInfo => {
         },
 
         logger: {level: "DEBUG"},
-
-        gatewayUrl: "http://api.freelog.com",
 
         mongoose: {
             url: "mongodb://127.0.0.1:27017/statistics"
