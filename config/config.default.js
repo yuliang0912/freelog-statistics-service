@@ -99,7 +99,7 @@ module.exports = appInfo => {
             ]
         },
 
-        customLoader: ['app/event-handler', 'app/mq-subscribe']
+        customFileLoader: ['app/event-handler', 'app/mq-subscribe']
     }
 
     return config;
