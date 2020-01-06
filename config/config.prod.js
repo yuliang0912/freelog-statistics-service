@@ -8,7 +8,7 @@ module.exports = {
 
     rabbitMq: {
         connOptions: {
-            host: '172.18.215.231',
+            host: 'rabbitmq-prod.common',
             port: 5672,
             login: 'prod_user_statistics',
             password: 'rabbit@freelog',
@@ -20,3 +20,4 @@ module.exports = {
         url: "mongodb://mongo-prod.common:27017/statistics"
     },
 }
+
